@@ -170,7 +170,7 @@ class Anatomy extends React.Component {
               <button id="genitaliaButton" className="maleGenitalia" onClick={(button,text,organ) => this.organClicked("genitalia","Genitalia","")}/>
               <div className = "icons">
                 <button id="brainButton" className="brain" onClick={(button,text,organ) => this.iconClicked("brain","Memory Problems")}><img src={brainIcon} alt="brainIcon"/></button>
-                <button id="examButton" className="exam" onClick={(button,text,organ) => this.iconClicked("stethoscope","Physical Exams")}><img src={examIcon} alt="examIcon"/></button>
+                <button id="examButton" className="exam" onClick={(button,text,organ) => this.iconClicked("stethoscope","Physical Exam")}><img src={examIcon} alt="examIcon"/></button>
                 <button id="fallsButton" className="falls" onClick={(button,text,organ) => this.iconClicked("hip", "Falls")}><img src={fallsIcon} alt="fallsIcon"/></button>
                 <button id="immunizationButton" className="immunization" onClick={(button,text,organ) => this.iconClicked("needle in arm", "Immunization")}><img src={immunizationIcon} alt="immunizationIcon"/></button>
                 <button id="sunExposureButton" className="sunExposure" onClick={(button,text,organ) => this.iconClicked("sun", "Sun Exposure")}><img src={sunExposureIcon} alt="sunExposureIcon"/></button>
