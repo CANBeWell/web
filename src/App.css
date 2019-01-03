@@ -1,7 +1,10 @@
+br{
+  font-size: 8px;
+}
+
 p {
   margin: 0;
 }
-
 
 /*text-align: center;*/
 .App {
@@ -30,6 +33,11 @@ p {
 .imageFromFolder {
   width:100%;
   max-width: 500px;
+}
+
+.topicBody{
+  margin-bottom: 12px;
+
 }
 
 @keyframes glowing {

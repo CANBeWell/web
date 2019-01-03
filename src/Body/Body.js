@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../Button.css';
-import BodyModal from './BodyModal';
+//import BodyModal from './BodyModal';
 import BodyHelpModal from './BodyHelpModal';
 import Anatomy from './anatomicalView';
 import '../App.css';
@@ -16,7 +16,7 @@ class MyBody extends React.Component {
       isOpen: false,
       width: 0,
       height: 0,
-      display: {name: "" , body: [{subject: "", text: ""}]},
+      display: [{name: "" , body: [{subject: "", text: ""}]}],
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -65,28 +65,22 @@ class MyBody extends React.Component {
     return (
 
       <div>
-        <button className="button button2" onClick={this.helpClicked}>?</button>
+
+        {/*<button className="button button2" onClick={this.helpClicked}>?</button> */}
 
         <div>
-          <Anatomy gender={this.props.userConfig.gender} getDisplay={this.props.getText}></Anatomy>
+          <Anatomy gender={this.props.userConfig.gender} userInfo = {this.props.userConfig} getDisplay={this.props.getText} lang={this.props.lang}></Anatomy>
         </div>
 
-        <BodyModal show={this.state.isOpen}
-          onClose={this.toggleModal}
-          display = {this.state.display}
-          button={this.state.buttonText}
-          displayConfig={this.state.displayConfigOption}
-          getTopic={this.props.getText}>
-        </BodyModal>
-
-        <BodyHelpModal show={this.state.help}
+        <BodyHelpModal
+          show={this.state.help}
           onClose={this.toggleHelp}
           header={this.state.headerText}
           body={this.state.bodyText}
-          button={this.state.buttonText}
-          displayConfig={this.state.displayConfigOption}>>
+          button={this.state.buttonText}>
         </BodyHelpModal>
 
+        <div align="center"><h3>{this.props.lang.body_general_instruction}</h3></div>
       </div>
     );
   }
@@ -96,6 +90,7 @@ MyBody.propTypes = {
   showBody: PropTypes.bool,
   userConfig: PropTypes.object,
   getText: PropTypes.func.isRequired,
+  lang: PropTypes.object
 };
 
 export default MyBody;

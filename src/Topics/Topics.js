@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {getListOfTopics} from '../JSONParser.js';
 import '../Button.css';
 import TopicsModal from './TopicsModal';
-import TopicList from '../JSONFolder/29Augtopichtml.json';
+import TopicList from '../JSONFolder/20DecemberHtmlTopic-FR.json';
 
 class Topics extends React.Component {
 
@@ -23,9 +22,9 @@ class Topics extends React.Component {
   helpClicked = () => {
         this.setState({
           isOpen: !this.state.isOpen,
-          headerText: "Help",
-          bodyText: "Here what you need to do on page Topics",
-          buttonText: "Got It?",
+          headerText: this.props.lang.topic_help_header,
+          bodyText: this.props.lang.topic_help_body,
+          buttonText: this.props.lang.config_modal_agree,
         });
   }
 
@@ -41,7 +40,7 @@ class Topics extends React.Component {
         {/*your help button in the right hand corner*/}
         <button className="button button2" onClick={this.helpClicked}>?</button>
 
-        <FilterableTopicTable topics={this.props.data(TopicList)} />
+        <FilterableTopicTable topics={this.props.data(TopicList,this.props.userConfig)} text={this.props.lang.topic_search_bar_placeholder} />
 
         {/*help dialog box*/}
         <TopicsModal show={this.state.isOpen}
@@ -49,7 +48,7 @@ class Topics extends React.Component {
           header={this.state.headerText}
           body={this.state.bodyText}
           button={this.state.buttonText}
-          displayConfig={this.state.displayConfigOption}>>
+          displayConfig={this.state.displayConfigOption}>
         </TopicsModal>
       </div>
     );
@@ -60,22 +59,22 @@ Topics.propTypes = {
   showTopics: PropTypes.bool,
   userConfig: PropTypes.object,
   data: PropTypes.func.isRequired,
+  lang: PropTypes.object,
 };
 
 class TopicRow extends React.Component {
 
   //open another topic/test
-  openDetails = (id) => {
+  /*openDetails = (id) => {
     var details = document.getElementById(id);
     details.open = true;
-  }
+  }*/
 
   render() {
 
     const Image = "http://quickforms2.eecs.uottawa.ca/canbewell/";
     //all the subjects
     var sujectArray = [];
-    console.log(this.props.topic.body);
     var bodys = this.props.topic.body;
     bodys.forEach((body) => {
 
@@ -93,14 +92,14 @@ class TopicRow extends React.Component {
               var adress = Image + link[1].trim();
               subjectArrayToDisplay.push(<div><img className="imageFromFolder" src={adress} alt="photo"/></div>);
             }
-            else if(link[1].indexOf("topic") === 0 || link[1].indexOf("topic") === 1){
+            /*else if(link[1].indexOf("topic") === 0 || link[1].indexOf("topic") === 1){
               link[1] = link[1].replace('topic://', '').trim();
               subjectArrayToDisplay.push(<span onClick={(id) => this.openDetails(link[1])}><font color="Yellow">{link[0]}</font></span>);
             }
             else if(link[1].indexOf("test") === 0 || link[1].indexOf("test") === 1){
               link[1] = link[1].replace('test://', '').trim();
               subjectArrayToDisplay.push(<span onClick={(id) => this.openDetails(link[1])}><font color="Yellow">{link[0]}</font></span>);
-            }
+            }*/
             else{
               subjectArrayToDisplay.push(<a href={link[1]} target="_blank"><font color="Yellow">{link[0]}</font></a>);
             }
@@ -123,19 +122,23 @@ class TopicRow extends React.Component {
           try{
             if(link[0] === "image" || link[0] === "images"){
               var adress = Image.concat(link[1].trim());
-              console.log(adress);
               bodyArrayToDisplay.push(<div><img className="imageFromFolder" src={adress} alt="photo"/></div>);
             }
-            else if(link[1].indexOf("topic") === 0 || link[1].indexOf("topic") === 1){
+            /*else if(link[1].indexOf("topic") === 0 || link[1].indexOf("topic") === 1){
               link[1] = link[1].replace('topic://', '').trim();
               bodyArrayToDisplay.push(<span onClick={(id) => this.openDetails(link[1])}><font color="Yellow">{link[0]}</font></span>);
             }
             else if(link[1].indexOf("test") === 0 || link[1].indexOf("test") === 1){
               link[1] = link[1].replace('test://', '').trim();
               bodyArrayToDisplay.push(<span onClick={(id) => this.openDetails(link[1])}><font color="Yellow">{link[0]}</font></span>);
-            }
+            }*/
             else{
-              bodyArrayToDisplay.push(<a href={link[1]} target="_blank"><font color="Yellow">{link[0]}</font></a>);
+              if(link[1] == null){
+                bodyArrayToDisplay.push(<a href={link[0]} target="_blank"><font color="Yellow">{link[0]}</font></a>);
+              }
+              else{
+                bodyArrayToDisplay.push(<a href={link[1]} target="_blank"><font color="Yellow">{link[0]}</font></a>);
+              }
             }
             i++;
           }catch(err){}
@@ -148,14 +151,14 @@ class TopicRow extends React.Component {
         }
 
       }
-      sujectArray.push(<div><b>{subjectArrayToDisplay}<br/></b>{bodyArrayToDisplay}</div>);
+      sujectArray.push(<div className="topicBody"><b>{subjectArrayToDisplay}<br/></b>{bodyArrayToDisplay}</div>);
     });
 
 
     return (
       <details id={this.props.topic.name}>
         <summary><font size="+1"><b>{this.props.topic.name}</b></font></summary>
-        <div>{sujectArray}</div>
+        <div>{'\n'}{sujectArray}</div>
       </details>
     );
   }
@@ -178,27 +181,29 @@ class TopicTable extends React.Component {
       width: '99%',
       minHeight: 50,
       margin: '0 auto',
-      textAlign:'center',
+      textAlign:'left',
       padding: 10,
       color: 'white'
     };
 
     var rows = [];
+    var index = 0;
     /*This is where you filter the content to display by comparing the what the user enter and the contend of the json file*/
     this.props.topics.forEach((topic) => {
       if (topic.name.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1) {
         return;
       }
-      rows.push(<div style={backdroplistItemStyle}>
+      rows.push(<div key={index} style={backdroplistItemStyle}>
                   <div style={listItemStyle}>
                     <TopicRow topic={topic}/>
                   </div>
                 </div>);
+      index++;
     });
     return (
-      <table className='table'>
+      <div className='table'>
         {rows}
-      </table>
+      </div>
     );
   }
 }
@@ -219,7 +224,7 @@ class SearchBar extends React.Component {
         <input
           className="form-control searchbar"
           type="text"
-          placeholder="Search topics..."
+          placeholder={this.props.text}
           value={this.props.filterText}
           onChange={this.handleFilterTextInputChange}
         />
@@ -253,6 +258,7 @@ class FilterableTopicTable extends React.Component {
         <SearchBar
           filterText={this.state.filterText}
           onFilterTextInput={this.handleFilterTextInput}
+          text = {this.props.text}
         />
         <TopicTable
           topics={this.props.topics}
@@ -262,5 +268,12 @@ class FilterableTopicTable extends React.Component {
     );
   }
 }
+
+SearchBar.propTypes = {
+  text: PropTypes.string,
+};
+FilterableTopicTable.propTypes = {
+  text: PropTypes.string,
+};
 
 export default Topics;

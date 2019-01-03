@@ -1,20 +1,21 @@
 //import React from 'react';
 import ReactDOM from 'react-dom';
-import React, { Component } from 'react';
+import React from 'react';
 import './index.css';
 import App from './App';
-import routes from './routes';
+import { CookiesProvider } from 'react-cookie';
+//import routes from './routes';
 //import registerServiceWorker from './registerServiceWorker';
 
-import * as firebase from 'firebase';
-import {DB_CONFIG} from './Config/config';
+//import * as firebase from 'firebase';
+//import {DB_CONFIG} from './Config/config';
 //import { Router } from 'react-router-dom';
 //import { BrowserRouter as Router, Route, Link, Switch, } from "react-router-dom";
 //import { BrowserRouter as Link } from "react-router-dom";
 
-firebase.initializeApp(DB_CONFIG);
+//firebase.initializeApp(DB_CONFIG);
 //ReactDOM.render(<Router routes={routes} />, document.getElementById('root'));
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<CookiesProvider><App/></CookiesProvider>, document.getElementById('root'));
 
 /*ReactDOM.render(
   <Router basename="/canbewell">
