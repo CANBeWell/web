@@ -1,5 +1,5 @@
-import {getUserInfo} from './UserInfo';
-import TopicList from './JSONFolder/29Augtopichtml.json';
+//import {getUserInfo} from './UserInfo';
+import TopicList from './JSONFolder/20DecemberHtmlTopic-EN.json';
 //import Images from 'http://quickforms2.eecs.uottawa.ca/';
 import Lang from './Lang/Lang.json';
 
@@ -8,8 +8,12 @@ import Lang from './Lang/Lang.json';
 class Data {
 
   ////////////////////////////////////////////Get One topics //////////////////////////////////////////////////
-  getTopic(button){
-    var UserInfo = getUserInfo();
+  getTopic(button,userInfo){
+    //Get user info from UserInfo.js
+    //var UserInfo = getUserInfo();
+    var UserInfo = userInfo;
+    /*if the user select patient ou want to get the text correcpondint "General Patient Text" in the json file,
+    if the user select provider ou want to get the text correcpondint "Health Provider Text"*/
     var pat_prov = "General Patient Text";
     if(UserInfo.patient_provider === "patient"){
       pat_prov = "General Patient Text";
@@ -40,7 +44,7 @@ class Data {
         for(var i = 0; i < list.length; i++){
           if((list[i]['Minimum age'] <= UserInfo.age && UserInfo.age <= list[i]['Maximum age']) || (UserInfo.age == "all ages") || (UserInfo.age == null)){
             var jsonGender = handleGenderString(list[i]['Gender']);
-            if((UserInfo.gender == "male" && jsonGender.male) || (UserInfo.gender == "female" && jsonGender.female) || (jsonGender.allGenders) || (UserInfo.gender == null) || (UserInfo.gender == "all genders")){
+            if((UserInfo.gender == "male" && jsonGender.male) || (UserInfo.gender == "female" && jsonGender.female) || (jsonGender.allGenders) || (UserInfo.gender == null) || (UserInfo.gender == "all_genders")){
               if(list[i]["Button"].toLowerCase() == button){
                 filteredList.push(
                   list[i]
@@ -57,17 +61,19 @@ class Data {
 
     function findTopicToDisplay(arra1) {
       var j = 0,
-      buttonList = [],
       topicList = [],
       TopicListItem = [];
 
       const nonApplicaple = ["NA","N/A"," NA","NA "," NA "];
-      console.log(!arra1.length);
+
+      console.log(userInfo);
+      var text = Lang[userInfo.language];
 
 
       if(!arra1.length){ //if the array is empty we whant to say that the topic not applicable to this user
-        TopicListItem.push({name: Lang.french.topic_is_not_applicable , body: []});
+        TopicListItem.push({name: text.topic_is_not_applicable , body: []});
       }
+
       else{
 
         for (var i=0; i<arra1.length; i++){
@@ -77,10 +83,10 @@ class Data {
             TopicListItem[j].body.push({subject: arra1[i]['Subject'], text: arra1[i][pat_prov]});
             j++;
           }
-        else if (topicList.includes(arra1[i]["Topic heading"]) &&  !nonApplicaple.includes(arra1[i][pat_prov].toUpperCase())){
-          let index = topicList.findIndex(topic => topic === arra1[i]["Topic heading"]);
-          TopicListItem[index].body.push({subject: arra1[i]['Subject'], text: arra1[i][pat_prov]});
-        }
+          else if (topicList.includes(arra1[i]["Topic heading"]) &&  !nonApplicaple.includes(arra1[i][pat_prov].toUpperCase())){
+            let index = topicList.findIndex(topic => topic === arra1[i]["Topic heading"]);
+            TopicListItem[index].body.push({subject: arra1[i]['Subject'], text: arra1[i][pat_prov]});
+          }
       }
     }
 
@@ -94,9 +100,10 @@ class Data {
 
   }
 //////////////////////////////////////////////Get list of topics ///////////////////////////////////////////////
-  getListOfTopics(listItem){
+  getListOfTopics(listItem,userInfo){
 
-    var UserInfo = getUserInfo();
+    //var UserInfo = getUserInfo();
+    var UserInfo = userInfo;
     //to get the corresponding text for patient and provider
     var pat_prov = "General Patient Text";
     if(UserInfo.patient_provider == "patient"){
@@ -127,7 +134,7 @@ class Data {
         for(var i = 0; i < list.length; i++){
           if((list[i]['Minimum age'] <= UserInfo.age && UserInfo.age <= list[i]['Maximum age']) || (UserInfo.age == "all ages") || (UserInfo.age == null)){
             var jsonGender = handleGenderString(list[i]['Gender']);
-            if((UserInfo.gender == "male" && jsonGender.male) || (UserInfo.gender == "female" && jsonGender.female) || (jsonGender.allGenders) || (UserInfo.gender == null) || (UserInfo.gender == "all genders")){
+            if((UserInfo.gender == "male" && jsonGender.male) || (UserInfo.gender == "female" && jsonGender.female) || (jsonGender.allGenders) || (UserInfo.gender == null) || (UserInfo.gender == "all_genders")){
               filteredList.push(
                 list[i]
               );
@@ -170,19 +177,18 @@ class Data {
   }
 
 
-  getListOfTests(listItem){
+  getListOfTests(listItem,userInfo){
 
-    var UserInfo = getUserInfo();
+    //var UserInfo = getUserInfo();
+    var UserInfo = userInfo;
     //to get the corresponding text for patient and provider
-    var pat_prov = "General/Patient Text";
+    var pat_prov = "Patient/Provider Text";
     if(UserInfo.patient_provider == "patient"){
       pat_prov = "Patient/Provider Text";
     }else if(UserInfo.patient_provider == "provider"){
       //youll have to change this string if they add a provider text for test in the json
       pat_prov = "Patient/Provider Text";
     }
-
-    var UserInfo = getUserInfo();
 
     var TestsItemList = [];
 
@@ -206,7 +212,7 @@ class Data {
         for(var i = 0; i < list.length; i++){
           if((list[i]['Minimum age'] <= UserInfo.age && UserInfo.age <= list[i]['Maximum age']) || (UserInfo.age == "all ages") || (UserInfo.age == null)){
             var jsonGender = handleGenderString(list[i]['Gender']);
-            if((UserInfo.gender == "male" && jsonGender.male) || (UserInfo.gender == "female" && jsonGender.female) || (jsonGender.allGenders) || (UserInfo.gender == null) || (UserInfo.gender == "all genders")){
+            if((UserInfo.gender == "male" && jsonGender.male) || (UserInfo.gender == "female" && jsonGender.female) || (jsonGender.allGenders) || (UserInfo.gender == null) || (UserInfo.gender == "all_genders")){
               filteredList.push(list[i]);
             }
           }

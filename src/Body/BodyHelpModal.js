@@ -54,8 +54,7 @@ BodyHelpModal.propTypes = {
   children: PropTypes.node,
   header: PropTypes.string,
   body: PropTypes.string,
-  button: PropTypes.string,
-  displayConfig: PropTypes.bool
+  button: PropTypes.string
 };
 
 export default BodyHelpModal;

@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {setGender} from './UserInfo';
-import {setPatientProvider} from './UserInfo';
-import {setAge} from './UserInfo';
-import DisclaimerText from './Disclaimer.json';
+//import {setGender} from './UserInfo';
+//import {setPatientProvider} from './UserInfo';
+//import {setAge} from './UserInfo';
+//import {getUserInfo} from './UserInfo';
+//import DisclaimerText from './Disclaimer.json';
 import './Style/checkbox.css';
 
 class InstructionModal extends React.Component {
@@ -14,7 +15,8 @@ class InstructionModal extends React.Component {
     setPatientProvider('patient');
     this.state = {
       selectedPatientProvider: 'patient',
-      iAgree: false
+      allAgesSelected: false,
+      value: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -24,7 +26,6 @@ class InstructionModal extends React.Component {
   }
 
   handleChange(event){
-
     this.setState({value: event.target.value});
     setAge(Number(event.target.value));
 
@@ -37,12 +38,12 @@ class InstructionModal extends React.Component {
   handlePatientProviderChange(event) {
 
     if(event.target.value == "patient"){
-      document.getElementById("disclaimer").innerHTML = DisclaimerText.patientDisclaimer;
+      document.getElementById("disclaimer").innerHTML = this.props.lang.patientDisclaimer;
       document.getElementById("genderSelector").style.display = "block";
     }
     else if(event.target.value == "provider"){
-      document.getElementById("disclaimer").innerHTML = DisclaimerText.providerDisclaimer;
-      document.getElementById("genderSelector").style.display = "none";
+      document.getElementById("disclaimer").innerHTML = this.props.lang.providerDisclaimer;
+      document.getElementById("genderSelector").style.display = "block";
     }
     setPatientProvider(event.target.value);
 
@@ -59,6 +60,7 @@ class InstructionModal extends React.Component {
     }, () => {
       this.setState({value: this.state.allAgesSelected ? "all ages" : ""}); //Call back once setState is done
       setAge(this.state.allAgesSelected ? "all ages" : "");
+
     });
   }
 
@@ -77,6 +79,15 @@ class InstructionModal extends React.Component {
     if(!this.props.show) {
       return null;
     }
+
+    var allagescheckboxStyle = {
+      display: 'block',
+    };
+
+    var checkAge = {
+      display: 'block',
+    };
+
 
     // The gray background
     const backdropStyle = {
@@ -100,15 +111,6 @@ class InstructionModal extends React.Component {
       overflow: 'scroll',
     };
 
-    const myAboutStyle = {
-      maxWidth: '90%',
-      textAlign:'center',
-      margin: '0 auto',
-      //padding: 10,
-      background: '#f2f2f2',
-      fontSize: '15px'
-    };
-
     // The modal "window"
     const myDisclaimerStyle = {
       maxWidth: '90%',
@@ -122,38 +124,73 @@ class InstructionModal extends React.Component {
       fontSize: '15px'
     };
 
+    var UserInfo = getUserInfo();
+    this.state.selectedPatientProvider = UserInfo.patient_provider;
+    this.state.selectedGender = UserInfo.gender;
+    this.state.selectAge = UserInfo.age;
+    var myBoolean_age = false;
+    var myBoolean_gender = false;
+    var myBoolean_allAge = false;
+
+
+    if(this.state.selectedPatientProvider == "patient"){
+      allagescheckboxStyle.display = "none";
+      checkAge.display = "block";
+    }
+    else if(this.state.selectedPatientProvider == "provider"){
+      allagescheckboxStyle.display = "block";
+      checkAge.display = "none";
+      myBoolean_allAge = true;
+    }
+
+    if(this.state.selectedGender == "male"){
+      myBoolean_gender = true;
+    }
+    else if(this.state.selectedGender == "female"){
+      myBoolean_gender = true;
+    }
+    else if(this.state.selectedGender == "all_genders"){
+      myBoolean_gender = true;
+    }
+
+    if((this.state.selectAge<18 && this.state.selectAge>149)){
+      checkAge.display = "block";
+      myBoolean_gender = false;
+    }
+    else if((this.state.selectAge>=18 && this.state.selectAge<=149)){
+      checkAge.display = "none";
+      myBoolean_age = true;
+    }
+
     return (
       <div className="backdrop" style={backdropStyle}>
         <div className="myModal" style={myModalStyle}>
 
           <div className="footer">
-            <h1>{this.props.lang.instruction_modal_header}</h1>
-            <div style={myAboutStyle}>
-              <p>{this.props.lang.about}</p>
-            </div>
-            {/*<span onClick={(userLang) => this.props.onSelectLang("english")}>En/</span>
-            <span onClick={(userLang) => this.props.onSelectLang("french")}>Fr</span>*/}
-            <p>{this.props.lang.i_am_an}:</p>
-            <div>
-              <form>
-                <div className="radio">
-                  <label>
-                    <input type="radio" value="patient" checked={this.state.selectedPatientProvider === 'patient'} onChange={this.handlePatientProviderChange} />
-                    Patient
-                  </label>
+            <p>{this.props.lang.instruction_modal_header}</p>
 
+            {/*select user*/}
+                <div className="radio">
+                <form>
+                {this.props.lang.user_selector}
+                  <label>
+                   <input type="radio" value="patient" checked={this.state.selectedPatientProvider === 'patient'} onChange={this.handlePatientProviderChange} />
+                    {this.props.lang.patient}
+                  </label>
                   <label>
                     <input type="radio" value="provider" checked={this.state.selectedPatientProvider === 'provider'} onChange={this.handlePatientProviderChange} />
-                    Provider
+                    {this.props.lang.provider}
                   </label>
+                  </form>
                 </div>
-              </form>
-            </div>
+            {/*select gender*/}
             <div>
               <form>
                 <div id="genderSelector"className="radio">
+                  {this.props.lang.gender_selector}
                   <label>
-                    <input type="radio" value="male" checked={this.state.selectedGender == 'male'} onChange={this.handleGenderChange}/>{this.props.lang.male}
+                    <input type="radio" value="male" checked={this.state.selectedGender == 'male'} onChange={this.handleGenderChange}/>
+                    {this.props.lang.male}
                   </label>
 
                   <label>
@@ -162,29 +199,39 @@ class InstructionModal extends React.Component {
                   </label>
 
                   <label>
-                    <input type="radio" value="all genders" checked={this.state.selectedGender == 'all genders'} onChange={this.handleGenderChange}/>{this.props.lang.other}
+                    <input type="radio" value="all_genders" checked={this.state.selectedGender == 'all_genders'} onChange={this.handleGenderChange}/>
+                    {this.props.lang.other}
                   </label>
                 </div>
               </form>
             </div>
-
+            {/*select age*/}
+            <div >
+              <form>
+                <div>
+                  {this.props.lang.age_selector}
+                  <input id='abc' type="text" value={this.state.value} onChange={this.handleChange} placeholder={this.props.lang.age_selector_place_holder}/>
+                  <label style = {allagescheckboxStyle}>
+                    <input type="checkbox"  checked={this.state.allAgesSelected} onChange={this.handleAllAgesSelected}/>{this.props.lang.all_ages}
+                  </label>
+                  <label style = {checkAge}>
+                    <h5>{this.props.lang.age_help}</h5>
+                  </label>
+                </div>
+              </form>
+            </div>
+            <div>
+              <button onClick={this.props.onClose} disabled= {!(myBoolean_gender && (myBoolean_age || myBoolean_allAge))}>{this.props.lang.agree}</button>
+              <button onClick={this.goBack} type="button">{this.props.lang.disagree}</button>
+            </div>
             <b>{this.props.lang.disclaimer_header}</b>
             <div style={myDisclaimerStyle}>
-              <p id="disclaimer">{DisclaimerText.patientDisclaimer}</p>
+              <p id="disclaimer">{this.props.lang.patientDisclaimer}</p>
             </div>
 
-            {/*<form>
-              <label className="container">
-                <input
-                  type="checkbox"
-                  onChange={this.props.giveThePermissionToClose} />
-                  I Agree
-              </label>
-            </form>*/}
-
             <div>
-              <button onClick={this.props.onClose}>{this.props.lang.i_agree}</button>
-              <button onClick={this.goBack} type="button">{this.props.lang.go_back}</button>
+              <button onClick={this.props.onClose} disabled= {!(myBoolean_gender && (myBoolean_age || myBoolean_allAge))}>{this.props.lang.agree}</button>
+              <button onClick={this.goBack} type="button">{this.props.lang.disagree}</button>
             </div>
           </div>
         </div>
