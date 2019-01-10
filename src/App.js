@@ -101,20 +101,38 @@ class App extends Component {
     });*/
   }
 
+  /*componentDidUpdate(){
+  }*/
+
   //toggle the config modif
   toggleConfigurationModal = () => {
-    this.setState({
-      configurationIsOpen: !this.state.configurationIsOpen
-    });
+    var genders = ["male","female","all_genders"];
+    if(genders.includes(this.state.gender) && ((this.state.age>=18 && this.state.age<=149) || this.state.allAgesSelected)){
+      this.setState({
+        configurationIsOpen: !this.state.configurationIsOpen
+      });
+      document.getElementById("config_help").style.display = "none";
+    }
+    else{
+      document.getElementById("config_help").style.display = "block";
+    }
   }
 
   toggleIntrutionModal = () => {
     //if(this.state.allowToClose){
-    const { cookies } = this.props;
-    cookies.set('_onboarded', true , { path: '/' });
-    this.setState({
-      instructionIsOpen: !this.state.instructionIsOpen
-    });
+    var genders = ["male","female","all_genders"];
+
+    if(genders.includes(this.state.gender) && ((this.state.age>=18 && this.state.age<=149) || this.state.allAgesSelected)){
+      const { cookies } = this.props;
+      cookies.set('_onboarded', true , { path: '/' });
+      this.setState({
+        instructionIsOpen: !this.state.instructionIsOpen
+      });
+      document.getElementById("help").style.display = "none";
+    }
+    else{
+      document.getElementById("help").style.display = "block";
+    }
     //}
   }
 
@@ -317,12 +335,11 @@ class App extends Component {
     });
   }
   disclaimerClicked = () => {
-    //let userInfo = {patient_provider: "patient"}
 
     this.setState({
       isOpen: !this.state.isOpen,
       headerText: this.state.lang.side_nav_disclaimer,
-      bodyText: this.state.user === "patient" ? this.state.lang.patientDisclaimer : this.state.lang.providerDisclaimer,
+      bodyText: this.state.user === "patient" ? this.state.lang.disclaimer + this.state.lang.patientDisclaimer + this.state.lang.important : this.state.lang.disclaimer + this.state.lang.providerDisclaimer + this.state.lang.important,
       buttonText: this.state.lang.config_modal_agree
     });
   }
@@ -371,10 +388,6 @@ class App extends Component {
       display: 'block',
     };
 
-    var checkAge = {
-      display: 'block',
-    };
-
     // The gray background
     const backdropStyle = {
       position: 'fixed',
@@ -410,34 +423,11 @@ class App extends Component {
       fontSize: '15px'
     };
 
-    //var UserInfo = getUserInfo();
-    //this.state.selectedPatientProvider = UserInfo.patient_provider;
-    //this.state.gender = UserInfo.gender;
-    //this.state.selectAge = UserInfo.age;
-    var myBoolean_age = false;
-    var myBoolean_gender = false;
-    var myBoolean_allAge = false;
-
     if(this.state.user == "patient"){
       allagescheckboxStyle.display = "none";
-      checkAge.display = "block";
     }
     else if(this.state.user == "provider"){
       allagescheckboxStyle.display = "block";
-      checkAge.display = "none";
-      myBoolean_allAge = true;
-    }
-
-    var genders = ["male","female","all_genders"]
-    myBoolean_gender = genders.includes(this.state.gender);
-
-    if((this.state.age<18 && this.state.age>149)){
-      checkAge.display = "block";
-      myBoolean_gender = false;
-    }
-    else if((this.state.age>=18 && this.state.age<=149)){
-      checkAge.display = "none";
-      myBoolean_age = true;
     }
 
     var instructionModal = [];
@@ -494,25 +484,24 @@ class App extends Component {
                     <label style = {allagescheckboxStyle}>
                       <input id='myCheck' type="checkbox" checked = {this.state.allAgesSelected} onChange={this.handleAllAgesSelected}/>{this.state.lang.all_ages}
                     </label>
-                    <label style = {checkAge}>
+                    <label id="help" className = "checkAge">
                       <h5>{this.state.lang.age_help}</h5>
                     </label>
                   </div>
                 </form>
               </div>
+
               <div>
-                <button onClick={this.toggleIntrutionModal} disabled = {!(myBoolean_gender && (myBoolean_age || myBoolean_allAge))}>{this.state.lang.agree}</button>
+                <button id="agree" onClick={this.toggleIntrutionModal}>{this.state.lang.agree}</button>
                 <button onClick={this.goBack} type="button">{this.state.lang.disagree}</button>
               </div>
+
               <b>{this.state.lang.disclaimer_header}</b>
+
               <div style={myDisclaimerStyle}>
                 <p>{this.state.lang.disclaimer}</p><br/>
                 <p id="disclaimer">{this.state.lang.patientDisclaimer}</p><br/>
                 <p>{this.state.lang.important}</p>
-              </div>
-              <div>
-                <button onClick={this.toggleIntrutionModal} disabled= {!(myBoolean_gender && (myBoolean_age || myBoolean_allAge))}>{this.state.lang.agree}</button>
-                <button onClick={this.goBack} type="button">{this.state.lang.disagree}</button>
               </div>
             </div>
           </div>
@@ -575,7 +564,7 @@ class App extends Component {
                       <label style = {allagescheckboxStyle}>
                             <input id = 'check' type="checkbox" checked = {this.state.allAgesSelected} onChange={this.handleAllAgesSelected}/>{this.state.lang.all_ages}
                       </label>
-                      <label style = {checkAge}>
+                      <label id="config_help" className="checkAge">
                             <h5>{this.state.lang.age_help}</h5>
                       </label>
                     </div>
@@ -583,7 +572,7 @@ class App extends Component {
                 </div>
                 {/*close button*/}
                 <div className="myModalButton">
-                  <button onClick={this.toggleConfigurationModal} disabled = {!(myBoolean_gender && (myBoolean_age || myBoolean_allAge))}>{this.state.lang.config_modal_agree}</button>
+                  <button onClick={this.toggleConfigurationModal}>{this.state.lang.config_modal_agree}</button>
                 </div>
               </div>
             </div>

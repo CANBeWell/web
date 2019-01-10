@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../Button.css';
 import TestsModal from './TestsModal';
-import TestList from '../JSONFolder/20DecemberHtmlTest-FR.json';
-
+import TestList from '../JSONFolder/8JanuaryHtmlTest-FR.json';
 
 class Tests extends React.Component {
 

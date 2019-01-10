@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../Button.css';
 import TopicsModal from './TopicsModal';
-import TopicList from '../JSONFolder/20DecemberHtmlTopic-FR.json';
+import TopicList from '../JSONFolder/8JanuaryHtmlTopic-FR.json';
 
 class Topics extends React.Component {
 

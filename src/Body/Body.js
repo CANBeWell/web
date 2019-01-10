@@ -68,6 +68,7 @@ class MyBody extends React.Component {
 
         {/*<button className="button button2" onClick={this.helpClicked}>?</button> */}
 
+        <div align="center"><h4 className="instruction">{this.props.lang.body_general_instruction}</h4></div>
         <div>
           <Anatomy gender={this.props.userConfig.gender} userInfo = {this.props.userConfig} getDisplay={this.props.getText} lang={this.props.lang}></Anatomy>
         </div>
@@ -80,7 +81,7 @@ class MyBody extends React.Component {
           button={this.state.buttonText}>
         </BodyHelpModal>
 
-        <div align="center"><h3>{this.props.lang.body_general_instruction}</h3></div>
+
       </div>
     );
   }

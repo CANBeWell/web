@@ -8,7 +8,9 @@
     "firebase": "^5.1.0",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
+    "react-cookie": "^3.0.8",
     "react-dom": "^16.3.2",
+    "react-native-popup-dialog": "^0.16.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "react-sidebar": "^2.3.2"
