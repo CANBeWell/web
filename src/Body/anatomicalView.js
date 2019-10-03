@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-//import {getText} from '../JSONParser';
-//import {getHeader} from '../JSONParser';
 import BodyModal from './BodyModal';
 
 //Import Male PNG
@@ -85,7 +83,7 @@ class Anatomy extends React.Component {
       this.setState({
         isOpen: !this.state.isOpen,
         display: this.props.getDisplay(button,this.props.userInfo),
-        buttonText: "close",
+        buttonText: this.props.lang.close_body_modal,
         displayConfigOption: false
       });
     }.bind(this), 1000);
@@ -102,7 +100,7 @@ class Anatomy extends React.Component {
       this.setState({
         isOpen: !this.state.isOpen,
         display: this.props.getDisplay(button,this.props.userInfo),
-        buttonText: "close",
+        buttonText: this.props.lang.close_body_modal,
         displayConfigOption: false
       });
     }.bind(this), 1000);

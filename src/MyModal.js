@@ -115,6 +115,7 @@ class MyModal extends React.Component {
 
     const myModalStyle = {
       overflow: 'scroll',
+      whiteSpace: 'pre-line'
     };
 
 

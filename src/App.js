@@ -21,6 +21,9 @@ import IconGender from './listicon.png';
 //import {setAge} from './UserInfo';
 //import {getUserInfo} from './UserInfo';
 
+
+
+
 class App extends Component {
 
   static propTypes = {
@@ -38,8 +41,7 @@ class App extends Component {
       language: null
     };// = getUserInfo();
     let DataToDisplay = new Data();
-    var app_language = "french";
-
+    var app_language = this.props.appLanguage;
     this.state = {
       isOpen: false,
       configurationIsOpen: false, //used to be isOpen

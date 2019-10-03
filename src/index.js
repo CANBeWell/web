@@ -4,6 +4,7 @@ import React from 'react';
 import './index.css';
 import App from './App';
 import { CookiesProvider } from 'react-cookie';
+import LandingPage from './Landingpage';
 //import routes from './routes';
 //import registerServiceWorker from './registerServiceWorker';
 
@@ -15,7 +16,7 @@ import { CookiesProvider } from 'react-cookie';
 
 //firebase.initializeApp(DB_CONFIG);
 //ReactDOM.render(<Router routes={routes} />, document.getElementById('root'));
-ReactDOM.render(<CookiesProvider><App/></CookiesProvider>, document.getElementById('root'));
+ReactDOM.render(<CookiesProvider><LandingPage/></CookiesProvider>, document.getElementById('root'));
 
 /*ReactDOM.render(
   <Router basename="/canbewell">

@@ -10,91 +10,6 @@ class BodyModal extends React.Component {
     };
   }
 
-  /*addTopicToTopicDisplayed = (topic) =>{
-    this.setState(prevState => ({
-      topicDisplayed: [...prevState.topicDisplayed, topic]
-    }));
-  }*/
-
-  /*getPopUpArray = (display) =>{
-    const Image = "http://quickforms2.eecs.uottawa.ca/canbewell/";
-    var popUpArray = [];
-    var topicsToDisplay = display;
-
-    topicsToDisplay.forEach((topic) => {
-      var bodys = topic.body;
-      //var subject = body.subject;
-      popUpArray.push(<div><h1>{topic.name}</h1></div>);
-      bodys.forEach((body) => {
-        var bodyArray = body.text.split(/(\[\[|\]\]|\n)/g);
-        var subject = body.subject.split(/(\[\[|\]\]|\n)/g);
-        var bodyArrayToDisplay = [];
-        var subjectArrayToDisplay = [];
-        var outerTextToDisplay = [];
-
-        for(var i = 0; i < subject.length; i++){
-          if(subject[i] == '[['){
-            var link = subject[i+1].split(';');
-            if(link[1] === undefined){
-              link[1] = "undefined";
-            }
-
-            if(link[0] === "image" || link[0] === "images"){
-              var adress = Image + link[1].trim();
-              subjectArrayToDisplay.push(<div><img className="imageFromFolder" src={adress} alt="canbewellImages"/></div>);
-            }
-            else if(link[1].indexOf("topic") === 0 || link[1].indexOf("topic") === 1){
-            }
-            else if(link[1].indexOf("test") === 0 || link[1].indexOf("test") === 1){
-            }
-            else{
-              subjectArrayToDisplay.push(<a href={link[1]} target="_blank"><font color="Yellow">{link[0]}</font></a>);
-            }
-            i++;
-          }
-          else if(subject[i] == '\n'){
-            subjectArrayToDisplay.push(<br/>);
-          }
-          else if (subject[i] !== ']]' ){
-            subjectArrayToDisplay.push(subject[i]);
-          }
-        }
-
-        for(var i = 0; i < bodyArray.length; i++){
-          if(bodyArray[i] == '[['){
-            var link = bodyArray[i+1].split(';');
-            try{
-              if(link[0] === "image" || link[0] === "images"){
-                //the trim fonction remove spaces before an after links
-                var adress = Image + link[1].trim();
-                bodyArrayToDisplay.push(<div><img className="imageFromFolder" src={adress} alt=""/></div>);
-              }
-              else if(link[1].indexOf("topic") === 0 || link[1].indexOf("topic") === 1){
-                bodyArrayToDisplay.push(<a><font color="Yellow">{link[0]}</font></a>);
-              }
-              else if(link[1].indexOf("test") === 0 || link[1].indexOf("test") === 1){
-                bodyArrayToDisplay.push(<a><font color="Yellow">{link[0]}</font></a>);
-              }
-              else{
-                bodyArrayToDisplay.push(<a href={link[1]} target="_blank"><font color="Yellow">{link[0]}</font></a>);
-              }
-              i++;
-            }catch(err){}
-          }
-          else if(bodyArray[i] == '\n'){
-            bodyArrayToDisplay.push(<br/>);
-          }
-          else if ( bodyArray[i] !== ']]' ){
-            bodyArrayToDisplay.push(bodyArray[i]);
-          }
-
-        }
-        popUpArray.push(<div className="topicBody"><p><b>{subjectArrayToDisplay}<br/></b>{bodyArrayToDisplay}</p>{outerTextToDisplay}</div>);
-      });
-    });
-    return popUpArray;
-  }*/
-
   getsubjectArray = (display) =>{
     const Image = "http://quickforms2.eecs.uottawa.ca/canbewell/";
     var subjectArray = [];
@@ -189,16 +104,6 @@ class BodyModal extends React.Component {
     });
     return subjectArray;
   }
-
-  /*getOuterText = (button) => {
-    var mOuterText = this.getPopUpArray(this.props.getTopic(button));
-    return mOuterText;
-  }*/
-
-  /*togglePopUp = (id) => {
-    var popup = document.getElementById(id);
-    popup.classList.toggle("show");
-  }*/
 
 
   render() {

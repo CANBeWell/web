@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../Button.css';
 import TopicsModal from './TopicsModal';
-import TopicList from '../JSONFolder/8JanuaryHtmlTopic-FR.json';
+import TopicList from '../JSONFolder/17MarchHtmlTopic-FR.json';
 
 class Topics extends React.Component {
 
@@ -38,7 +38,7 @@ class Topics extends React.Component {
 
       <div>
         {/*your help button in the right hand corner*/}
-        <button className="button button2" onClick={this.helpClicked}>?</button>
+        {/*<button className="button button2" onClick={this.helpClicked}>?</button>*/}
 
         <FilterableTopicTable topics={this.props.data(TopicList,this.props.userConfig)} text={this.props.lang.topic_search_bar_placeholder} />
 
